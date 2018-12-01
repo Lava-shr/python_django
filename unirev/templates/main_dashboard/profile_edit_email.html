@@ -1,0 +1,53 @@
+{% extends "main_dashboard/profile.html" %}
+{% load staticfiles %}
+
+
+{% block header %}
+    <a class="btn btn-success" href="{% url 'profile_with_pk' data.user_info.user_id  %}">Profile</a>
+{% endblock %}
+
+{% block content %}
+    <br><br><br><br><br>
+
+     <form class="form-signin text-center" method="POST" id="change_email">
+        {% csrf_token %}
+         <select id = "pk"> <option value = "{{data.user_info.user_id}}"></option></select>
+        <div class="w-50 p-3 mx-auto bg-dark" >
+
+            <h1 class="h3 mb-3 font-weight-normal text-white">Please fill your new email here</h1>
+
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus name="email"><br>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).on('submit', '#change_email',function (e) {
+            e.preventDefault();
+            var email = $('#inputEmail').val();
+            var pk = $('#pk').val();
+            $.ajax({
+                type: "POST",
+                url:"/profile_edit_email_ajax/",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'pk': pk,
+                    'email': email
+                },
+                dataType: 'json',
+                success: function () {
+                    alert("Email Updated");
+                },
+                error: function () {
+                    alert("Can't update email. Its taken")
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

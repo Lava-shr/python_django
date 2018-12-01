@@ -1,0 +1,25 @@
+{% extends "main_dashboard/uni_homepage.html" %}
+{% load staticfiles %}
+
+
+{% block content %}
+    <select id = "pk_user"> <option value = "{{data.user_info.user_id}}"></option></select>
+    <select id = "pk_reviews"> <option value = "{{data.reviews.reviews_id}}"></option></select>
+<br><br><br><br><br><br>
+    <div class="content">
+    <div class="text-danger h1 text-center">
+        Post Cannot be deleted
+    </div><br><br><br>
+            <div class ="box h5 text-white text-center"><br><br>
+                {{ data.error }}
+            <br><br><br>
+            </div><br>
+
+
+{% endblock %}
+
+{% block footer_content %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

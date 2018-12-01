@@ -1,0 +1,91 @@
+DROP TABLE IF EXISTS UserImage;
+DROP TABLE IF EXISTS UniImage;
+DROP TABLE IF EXISTS Comments;
+DROP TABLE IF EXISTS Reviews;
+DROP TABLE IF EXISTS Universities;
+DROP TABLE IF EXISTS Users;
+
+
+CREATE TABLE Users(
+	user_id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255),
+    university_studies VARCHAR(255),
+    dob DATE,
+    passwords VARCHAR(200),
+    status VARCHAR(100),
+    time_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE UserImage(
+	image_id INTEGER NOT NULL AUTO_INCREMENT,
+    user_id INTEGER NOT NULL,
+    image LONGTEXT,
+    PRIMARY KEY (image_id , user_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Universities(
+	uni_id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    uni_name VARCHAR(255),
+    location VARCHAR(255),
+    ratings INTEGER
+);
+
+
+CREATE TABLE UniImage(
+	image_id INTEGER NOT NULL AUTO_INCREMENT,
+    uni_id INTEGER NOT NULL,
+    image LONGTEXT,
+    PRIMARY KEY (image_id , uni_id),
+    FOREIGN KEY (uni_id) REFERENCES Universities(uni_id) ON DELETE CASCADE
+);
+
+CREATE TABLE UnitOfStudy(
+	uos_id INTEGER NOT NULL AUTO_INCREMENT,
+    uni_id INTEGER NOT NULL,
+    unit_name VARCHAR(255),
+    ratings INTEGER,
+    PRIMARY KEY (uos_id , uni_id),
+    FOREIGN KEY (uni_id) REFERENCES Universities(uni_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Reviews(
+	reviews_id INTEGER NOT NULL AUTO_INCREMENT,
+    uni_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    reviews LONGTEXT,
+    time_posted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(reviews_id , uni_id, user_id),
+    FOREIGN KEY (uni_id) REFERENCES Universities(uni_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Experience(
+	exp_id INTEGER NOT NULL AUTO_INCREMENT,
+    user_id INTEGER NOT NULL,
+    uos_id INTEGER NOT NULL,
+    experience LONGTEXT,
+    time_posted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(exp_id , uos_id, user_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (uos_id) REFERENCES UnitOfStudy(uos_id) ON DELETE CASCADE
+);
+    
+CREATE TABLE Comments(
+	comments_id INTEGER NOT NULL AUTO_INCREMENT,
+    user_id INTEGER NOT NULL,
+    reviews_id INTEGER NOT NULL,
+    comments LONGTEXT,
+    time_posted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY(comments_id , user_id, reviews_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE, 
+    FOREIGN KEY (reviews_id) REFERENCES Reviews(reviews_id) ON DELETE CASCADE
+);
+
+
+
+
+
+
+
+

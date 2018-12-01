@@ -1,0 +1,55 @@
+{% extends "main_dashboard/profile.html" %}
+{% load staticfiles %}
+
+
+{% block header %}
+    <a class="btn btn-success" href="{% url 'profile_with_pk' data.user_info.user_id  %}">Profile</a>
+{% endblock %}
+
+
+{% block content %}
+    <br><br><br><br><br><br>
+
+     <form class="form-signin text-center" method="POST" id="change_name">
+        {% csrf_token %}
+
+         <select id = "pk"> <option value = "{{data.user_info.user_id}}"></option></select>
+
+        <div class="w-50 p-3 mx-auto bg-dark" >
+
+
+      <h1 class="h3 mb-3 font-weight-normal text-white">Please fill the new name.</h1>
+
+            <label for="inputText" class="sr-only">Full Name</label>
+            <input type="text" id="inputText" class="form-control" placeholder="Full Name" required autofocus name="full_name"><br>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+            </div>
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).on('submit', '#change_name',function (e) {
+            e.preventDefault();
+            var name = $('#inputText').val();
+            var pk = $('#pk').val();
+            $.ajax({
+                type: "POST",
+                url:"/profile_edit_name_ajax/",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'pk': pk,
+                    'name': name
+                },
+                dataType: 'json',
+                success: function () {
+                    $('#full_user_name').load(' #full_user_name')
+                    alert("Name Updated");
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "main_dashboard/profile.html" %}
+{% load staticfiles %}
+
+
+{% block header %}
+    <a class="btn btn-success" href="{% url 'profile_with_pk' data.user_info.user_id  %}">Profile</a>
+{% endblock %}
+
+{% block content %}
+    <br><br><br><br><br>
+
+     <form class="form-signin text-center" method="POST" id="change_status">
+        {% csrf_token %}
+         <select id = "pk"> <option value = "{{data.user_info.user_id}}"></option></select>
+        <div class="w-50 p-3 mx-auto bg-dark" >
+
+
+            <h1 class="h3 mb-3 font-weight-normal text-white">Please update your status</h1>
+
+            <div class="form-group">
+                  <label for="sel1"><a class="text-white text-left">Select your status</a></label>
+                  <br>
+                    <select name="dropdown" class="form-control" id="sel1" >
+                    <option value="Current Student">Current Student</option>
+                    <option value="Previous Student">Previous Student</option>
+                    <option value="University Employee">University Employee</option>
+                    <option value="Not Applicable">Not Applicable</option>
+                  </select>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).on('submit', '#change_status',function (e) {
+            e.preventDefault();
+            var status = $('#sel1').val();
+            var pk = $('#pk').val();
+            $.ajax({
+                type: "POST",
+                url:"/profile_edit_status_ajax/",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'pk': pk,
+                    'status': status
+                },
+                dataType: 'json',
+                success: function () {
+                    alert("Status Updated");
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

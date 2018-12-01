@@ -1,0 +1,88 @@
+{% extends "main_dashboard/profile.html" %}
+{% load staticfiles %}
+
+{% block header_content %}
+    <title>Images Page</title>
+{% endblock %}
+{% block header %}
+    <a class="btn btn-success" href="{% url 'profile_with_pk' data.user_info.user_id  %}">Profile</a>
+{% endblock %}
+
+{% block style_content2 %}
+    <style>
+
+    @media (min-width: 992px) {
+      body {
+        padding-top: 56px;
+      }
+    }
+    .container {
+            background-color: #2B547E;
+            position:relative;
+            top:5%;
+            left:2%;
+            right: 10%;
+            width: 70%;
+            border: 1px solid green ;
+            border-radius: 15px 50px;
+		}
+    </style>
+{% endblock %}
+
+
+
+<!-- header Starts here -->
+<body>
+
+
+{% block content %}
+       <div class="container">
+            <br>
+            <h1 class="my-4 text-center h3 text-danger">Your Photo Gallery</h1><br>
+
+                <div class="row text-center text-lg-left">
+                    {% for img in data.user_img %}
+                    <div class="col-lg-3 col-md-4 col-xs-6">
+
+                          <a href="#" class="d-block mb-4 h-100">
+                            <img class="img-fluid img-thumbnail" src="{{ img.image.url }}" alt="">
+                          </a>
+
+                    </div>
+                    {% endfor %}
+                </div>
+       </div>
+
+    <br><br><br><br><br>
+
+    <!-- Upload photo here action="{% url 'profile_images' data.user_info.user_id  %}"-->
+    <div class="container">
+         <div class="text-danger text-center h4">
+
+             Upload your photos down here<br>
+             (Maximum file size 5MB)
+
+             <br><br>
+                <form method="post" enctype="multipart/form-data" >
+                    {% csrf_token %}
+
+                    <input type="file" name="file">
+                    <button type="submit" onclick= "return confirm('Are you sure you want to upload this image')">Upload</button>
+                </form>
+         </div>
+    <br>
+    </div>
+
+
+<br><br><br><br><br><br>
+{% endblock %}
+
+</body>
+
+{% block scripts %}
+
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}

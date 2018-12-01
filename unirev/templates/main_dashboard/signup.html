@@ -1,0 +1,72 @@
+{% extends "main_dashboard/base.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sign up</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<style>
+    .sr-only {
+  min-width: 200px !important;
+  display: inline-block !important
+}
+</style>
+
+</head>
+
+<body>
+
+{% block content %}
+
+    <section class="bg">
+    <br><br><br><br>
+    <form class="form-signin text-center" method="POST">
+        {% csrf_token %}
+        <div class="w-50 p-3 mx-auto bg-dark" >
+
+      <h1 class="h3 mb-3 font-weight-normal text-white">Please sign up here</h1>
+
+            <label for="inputText" class="sr-only">Full Name</label>
+            <input type="text" id="inputText" class="form-control" placeholder="Full Name" required autofocus name="full_name"><br>
+
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus name="email"><br>
+
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required name="password"><br>
+
+            <label for="inputPassword" class="sr-only">Re-enter your Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Re-enter your Password" required name="re_password"><br>
+
+            <label for="inputText" class="sr-only">University Studied</label>
+            <input type="text" id="inputEmail" class="form-control" placeholder="University Studied" required autofocus name="university"><br>
+
+            <a class="text-white text-left">Enter your Date of Birth:</a>
+            <input type="date" name="bday" min="1000-01-02"><br><br>
+
+            <div class="form-group">
+              <label for="sel1"><a class="text-white text-left">Select your status</a></label>
+              <br>
+                <select name="dropdown" class="form-control" id="sel1" >
+                <option value="Current Student">Current Student</option>
+                <option value="Previous Student">Previous Student</option>
+                <option value="University Employee">University Employee</option>
+                <option value="Not Applicable">Not Applicable</option>
+              </select>
+            </div>
+             <p class="text-white">{{ data.reason }}</p><br>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+            </div>
+    </form>
+    </section>
+{% endblock %}
+</body>
+
+{% block scripts %}
+
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}

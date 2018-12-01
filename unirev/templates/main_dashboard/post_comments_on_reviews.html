@@ -1,0 +1,77 @@
+{% extends "main_dashboard/uni_homepage.html" %}
+{% load staticfiles %}
+
+
+{% block content %}
+    <select id = "pk_user"> <option value = "{{data.user_info.user_id}}"></option></select>
+    <select id = "pk_reviews"> <option value = "{{data.reviews.reviews_id}}"></option></select>
+<br><br><br><br><br>
+    <div class="content">
+    <div class="text-danger h1 text-center">
+        {{ data.reviews.reviews }}
+    </div><br><br><br>
+    <div class="review_update text-white text-center" id="comments_update" >
+        {% for comments in data.comments %}
+            <div class ="box h5"><br><br>
+                {{ comments.comments }}
+                <form method="POST" id="delete_comments" action="{% url 'delete_comment' %}" >
+                                {% csrf_token %}
+                                <input type="hidden" name="pk_reviews" id=pk_reviews" value="{{ data.reviews.reviews_id}}">
+                                <input type="hidden" name="pk_comments" id=pk_comments" value="{{ comments.comments_id }}">
+                                <button class="btn btn-warning text-white bg-dark btn-sm pull-right"
+                                        onclick= "return confirm('Are you sure you want delete this comment')"
+                                            type="submit" > Delete  </button><br><br>
+                </form>
+
+            </div><br>
+        {% endfor %}
+    </div>
+    <br><br>
+
+
+        <form method="POST" id="post_comments" >
+            {% csrf_token %}
+            <div class="col-md-12 col-md-offset-3">
+
+                    <div class="form-group">
+                        <textarea class="form-control" id="comments" name="comments">Enter your comments here</textarea>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Post</button>
+                    </div>
+        </form>
+    </div>
+    <br><br><br>
+{% endblock %}
+
+{% block footer_content %}
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).on('submit', '#post_comments',function (e) {
+            e.preventDefault();
+            var comments = $('#comments').val();
+            var pk_user = $('#pk_user').val();
+            var pk_reviews = $('#pk_reviews').val();
+            $.ajax({
+                type: "POST",
+                url:"/post_comments_on_reviews_ajax/",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'pk_user': pk_user,
+                    'pk_reviews': pk_reviews,
+                    'comments': comments
+                },
+                dataType: 'json',
+                success: function () {
+                    $('#comments_update').load(' #comments_update')
+                    alert("Comments posted");
+                },
+                error: function () {
+                    alert("User need to logged in for Posting comments")
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

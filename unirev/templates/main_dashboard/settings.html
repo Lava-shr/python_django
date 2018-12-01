@@ -1,0 +1,87 @@
+{% extends "main_dashboard/profile.html" %}
+{% load staticfiles %}
+
+{% block header_content %}
+    <title>Settings</title>
+{% endblock %}
+{% block style_content %}
+<style>
+		.table {
+            position:relative;
+            top:15%;
+            left:10%;
+            right: 10%;
+            width: 80%;
+		}
+
+</style>
+{% endblock %}
+
+{% block header %}
+    <a class="btn btn-success" href="{% url 'profile_with_pk' data.user_info.user_id  %}">Profile</a>
+{% endblock %}
+
+
+{% block content %}
+
+    <br><br>
+    <table class="table table-bordered table-hover table-dark">
+
+        <tbody>
+            <tr class="success">
+                <td> Full Name: </td>
+                <td> {{ data.user_info.full_name }}</td>
+                <td> <a class="btn btn-dark" href="{% url 'profile_edit_name' data.user_info.user_id  %}">Change Name</a></td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr class="success">
+                <td> Password: </td>
+                <td> **********</td>
+                <td> <a class="btn btn-dark" href="{% url 'profile_edit_password' data.user_info.user_id  %}">Change Password</a></td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr class="success">
+                <td> Email: {{ data.user_info.full_name }}</td>
+                <td> {{ data.user_info.email }}</td>
+                <td> <a class="btn btn-dark" href="{% url 'profile_edit_email' data.user_info.user_id  %}">Change Email</a></td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr class="success">
+                <td> Status: </td>
+                <td> {{ data.user_info.status }}</td>
+                <td> <a class="btn btn-dark" href="{% url 'profile_edit_status' data.user_info.user_id  %}">Change Status</a></td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr class="success">
+            <td colspan="2"> Delete Account: </td>
+             <td >   <form id="deactivate_form" method="post" action={% url 'deactivate_account' data.user_info.user_id  %}>
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn btn-dark" onclick= "return confirm('Are you sure you want delete your account')" name="deactivate_form" id="deactivate_form">Delete Account</button>
+                </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+<br><br><br><br><br><br>
+
+
+             <br><br><br>
+
+    <!-- Deactive your account here
+    <form id="deactivate_form" method="post" action={% url 'deactivate_account' data.user_info.user_id  %}>
+        {% csrf_token %}
+        <button type="submit" class="btn btn-dark" onclick= "return confirm('Are you sure you want deactivate the account')" name="deactivate_form" id="deactivate_form">Delete Account</button>
+    </form>
+    -->
+
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "main_dashboard/base.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>University Review Homepage</title>
+{% block style_content11 %}
+    <style>
+</style>
+{% endblock %}
+
+{% block header_content %}
+    {% if data.user_info %}
+        <nav>
+        <div class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+          <h5 class="my-0 mr-md-auto font-weight-normal">
+            <a class="navbar-brand" href="{% url 'index' %}">UniRev</a>
+          </h5>
+            <a class="navbar-brand my-0 mr-md-auto font-weight-normal text-white" id="full_user_name">Welcome
+                {{ data.user_info.full_name }}</a>
+            {% block header %}
+                <a class="btn btn-success" href="{% url 'settings' data.user_info.user_id  %}">Settings</a>
+            {% endblock %}
+            <a class="navbar-brand my-0"> </a>
+            <a class="btn btn-danger" href="{% url 'profile' %}?action=sign_out">Sign out</a>
+        </div>
+        </nav>
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+</head>
+
+
+
+{% block content %}
+
+    <section class="bg">
+    <form class="form-inline" method="POST">
+        {% csrf_token %}
+        <div class="container">
+            <div class="row align-items-center" style="min-height: calc(100vh - 66px);">
+                <div class="col-lg-6 mx-auto">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="query" placeholder="Search for University">
+                            <span class="input-group-btn">
+                                    <button class="btn btn-secondary" type="submit">Go!</button>
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    </section>
+{% endblock %}

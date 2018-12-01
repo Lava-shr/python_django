@@ -1,0 +1,46 @@
+{% extends "main_dashboard/uni_homepage.html" %}
+{% load staticfiles %}
+
+
+
+{% block content %}
+    <select id = "pk_user"> <option value = "{{data.user_info.user_id}}"></option></select>
+    <select id = "pk_uni"> <option value = "{{data.uni.uni_id}}"></option></select>
+
+
+<br><br><br><br><br><br>
+    <div class="content">
+        <div class="text-danger h1 text-center">
+            {{ data.uni.uni_name }} Photo Gallery
+        </div>
+    </div>
+
+    <div class="container">
+            <br>
+            <h1 class="my-4 text-center h3 text-danger"></h1><br>
+
+                <div class="row text-center text-lg-left">
+                    {% for img in data.uni_images %}
+                    <div class="col-lg-3 col-md-4 col-xs-6">
+
+                          <a href="#" class="d-block mb-4 h-100">
+                            <img class="img-fluid img-thumbnail" src="{{ img.image.url }}" alt="">
+                          </a>
+
+                    </div>
+                    {% endfor %}
+                </div><br><br>
+       </div>
+    <br> <br><br><br><br><br> <br><br><br><br>
+{% endblock %}
+
+
+
+
+
+{% block footer_content %}
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

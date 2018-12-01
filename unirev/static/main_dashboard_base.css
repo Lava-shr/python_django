@@ -1,0 +1,31 @@
+
+    .nav.navbar-nav{
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (min-width: 768px) {
+      .navbar-nav {
+             float:none;
+            margin: 0 auto;
+            display: table;
+            table-layout: fixed;
+      }
+    }
+    body, html {
+        height: 100%;
+    }
+    .bg {
+        /* The image used */
+        background-image: url("/static/images/background.jpg");
+        background-size: cover;
+
+        /* Full height */
+        height: 100%;
+
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }

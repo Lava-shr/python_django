@@ -1,0 +1,57 @@
+{% extends "main_dashboard/uni_homepage.html" %}
+{% load staticfiles %}
+
+
+
+{% block content %}
+    <select id = "pk_user"> <option value = "{{data.user_info.user_id}}"></option></select>
+    <select id = "pk_uni"> <option value = "{{data.uni.uni_id}}"></option></select>
+<br><br><br><br><br><br>
+
+    <div class= "content">
+        <div class="text-danger h1">
+            This is {{ data.uni.uni_name }} Unit of Study page.<br><br>
+        </div>
+        <div class="review_update text-white h4" id="review_update" >
+            <table class="table text-center">
+                        <thead class="thead-light" class="table table-striped">
+                            <tr class="bg-warning">
+                                <th>#</th>
+                                <th>UOS Name</th>
+                                <th> Ratings out of 5</th>
+                                <th> Url for Experience<span style="float:right"> </span></th>
+                            </tr>
+                        </thead>
+            {% for unit in data.unit_of_study %}
+                <tbody>
+                        <tr class="success" class="bg-info">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ unit.unit_name }}</td>
+                            <td>{% if unit.ratings == 1 %}
+                                    <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                    {% endif%}
+                                    {% if unit.ratings == 2 %}
+                                        <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                    {% endif%}
+                                    {% if unit.ratings == 3 %}
+                                        <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                    {% endif%}
+                                    {% if unit.ratings == 4 %}
+                                        <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                    {% endif%}
+                                    {% if unit.ratings == 5 %}
+                                        <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i>
+                                    {% endif%}</td>
+                            <td><a class="btn btn-warning text-white bg-dark" href="{% url 'uos_experience' unit.uos_id %}"> View People Experience </a></td>
+                        </tr>
+                    </tbody>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

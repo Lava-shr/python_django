@@ -1,0 +1,110 @@
+{% extends "main_dashboard/uni_homepage.html" %}
+{% load staticfiles %}
+
+
+
+{% block content %}
+    <select id = "pk_user"> <option value = "{{data.user_info.user_id}}"></option></select>
+    <select id = "pk_uos"> <option value = "{{data.uos.uos_id}}"></option></select>
+
+
+<br><br><br><br><br><br>
+    <div class= "content">
+        <div class="text-danger h1">
+            This is {{ data.uos.unit_name }} Unit of Page.
+        </div>
+
+        <br>
+            <form method="POST" id="rate_uos" >
+                {% csrf_token %}
+                <div class="dropdown">
+
+                    <button class="btn btn-dark" type="submit">Rate This UOS</button>
+                    <select name="dropdown" id="rate" >
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div><br><br>
+            </form>
+
+        <div class="review_update text-white" id="experience_update" >
+            {% for exp in data.uos_exp %}
+                <div class="box text-center h5 "><br>
+                     {{ exp.experience }} <br><br>
+                </div>
+            {% endfor %}
+        </div>
+        <br><br><br>
+
+        <form method="POST" id="post_experience" >
+                {% csrf_token %}
+            <div class="col-md-12 col-md-offset-3">
+                <div class="form-group">
+                    <textarea class="form-control" rows="4" id="experience" name="experience">Enter your experience here</textarea>
+                </div>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Post</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+    <script type="text/javascript">
+        $(document).on('submit', '#post_experience',function (e) {
+            e.preventDefault();
+            var experience = $('#experience').val();
+            var pk_user = $('#pk_user').val();
+            var pk_uos = $('#pk_uos').val();
+            $.ajax({
+                type: "POST",
+                url:"/uos_experience_post_ajax/",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'pk_user': pk_user,
+                    'pk_uos': pk_uos,
+                    'experience': experience
+                },
+                dataType: 'json',
+                success: function () {
+                    $('#experience_update').load(' #experience_update')
+                    alert("Post posted");
+                },
+                error: function () {
+                    alert("User need to logged in for Posting experience")
+                }
+            });
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        $(document).on('submit', '#rate_uos',function (e) {
+            e.preventDefault();
+            var ratings = $('#rate').val();
+            var pk_uos = $('#pk_uos').val();
+            $.ajax({
+                type: "POST",
+                url:"/post_ratings_on_uos_ajax/",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'pk_uos': pk_uos,
+                    'ratings': ratings
+                },
+                dataType: 'json',
+                success: function () {
+                    alert("Your rating has been recorded");
+                },
+                error: function () {
+                    alert("User need to logged in for giving ratings")
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

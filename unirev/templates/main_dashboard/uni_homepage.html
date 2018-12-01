@@ -1,0 +1,208 @@
+{% extends "main_dashboard/base.html" %}
+{% load staticfiles %}
+
+{% block style_content %}
+        <style>
+        #pk_user {
+            visibility: hidden;
+        }
+        #pk_uni {
+            visibility: hidden;
+        }
+        #pk_review {
+        }
+        .content {
+            max-width: 1000px;
+            margin: auto;
+        }
+        body {
+            padding-top: 0px;
+            background:  darkslategrey;
+        }
+        .box {
+            background: black;
+            border: 1px solid green ;
+            border-radius: 15px 50px;
+        }
+        .container {
+                background-color: #2B547E;
+                position:relative;
+                top:5%;
+                left:2%;
+                right: 10%;
+                width: 70%;
+                border: 1px solid green ;
+                border-radius: 15px 50px;
+            }
+        </style>
+{% endblock %}
+
+{% block header_content %}
+    {% if data.user_info %}
+        <nav>
+        <div class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+          <h5 class="my-0 mr-md-auto font-weight-normal">
+            <a class="navbar-brand" href="{% url 'index' %}">UniRev</a>
+          </h5>
+            <a class="navbar-brand my-0 mr-md-auto font-weight-normal text-white" id="full_user_name">Welcome
+                {{ data.user_info.full_name }}</a>
+            {% block header %}
+                <a class="btn btn-success" href="{% url 'settings' data.user_info.user_id  %}">Settings</a>
+            {% endblock %}
+            <a class="navbar-brand my-0"> </a>
+            <a class="btn btn-danger" href="{% url 'profile' %}?action=sign_out">Sign out</a>
+        </div>
+        </nav>
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+
+
+{% block content %}
+    <select id = "pk_user"> <option value = "{{data.user_info.user_id}}"></option></select>
+    <select id = "pk_uni"> <option value = "{{data.uni.uni_id}}"></option></select>
+<br><br><br><br><br><br>
+    <div class="content">
+    <div class="text-danger h1 text-center">
+        This is {{ data.uni.uni_name }} reviews page. <br><a class="btn btn-warning text-white bg-dark"
+                                                         href="{% url 'uni_unit_of_study' data.uni.uni_id  %}">
+                                                         Unit of Study</a> <br>
+                                                        <a class="btn btn-warning text-white bg-dark"
+                                                         href="{% url 'uni_images' data.uni.uni_id  %}">
+                                                         University Images</a> <br>
+
+    </div>
+
+    <div class="text-danger h3" id="ratings">
+        {% if data.uni.ratings == 1 %}
+            University rating:<i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+        {% endif%}
+        {% if data.uni.ratings == 2 %}
+            University rating: <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+        {% endif%}
+        {% if data.uni.ratings == 3 %}
+            University rating: <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+        {% endif%}
+        {% if data.uni.ratings == 4 %}
+            University rating: <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+        {% endif%}
+        {% if data.uni.ratings == 5 %}
+            University rating: <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i>
+        {% endif%}
+    </div>
+
+    <div class="rate_university" id="rate_university">
+        <form method="POST" id="rate_uni" >
+            {% csrf_token %}
+            <div class="dropdown">
+
+            <button class="btn btn-dark" type="submit">Rate This University</button>
+                <select name="dropdown" id="rate" >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+    <br><br>
+
+        <div class="review_update text-white" id="review_update">
+            {% for review in data.reviews %}<br>
+                <div class="box text-center h5 "><br>
+                    {{ review.reviews }}<br><br>
+                                <form method="POST" id="delete_review" action="{% url 'delete_review' %}"  >
+                                    {% csrf_token %}
+                                    <input type="hidden" name="pk_uni" id=pk_uni" value="{{ data.uni.uni_id }}">
+                                    <input type="hidden" name="pk_reviews" id=pk_reviews" value="{{ review.reviews_id }}">
+                                    <button class="btn btn-warning text-white bg-dark btn-sm pull-right"
+                                            onclick= "return confirm('Are you sure you want delete this comment')"
+                                            type="submit" > Delete  </button><br><br>
+
+                                </form>
+                                        <a class="btn btn-warning text-white bg-dark btn-sm pull-right"
+                                        href="{% url 'post_comments_on_reviews' review.reviews_id  %}">
+                                        Comment</a>
+                                     <br><br>
+                </div>
+            {% endfor %}
+        </div>
+
+    <br><br>
+
+
+        <form method="POST" id="post_review" >
+            {% csrf_token %}
+            <div class="col-md-12 col-md-offset-3">
+                <div class="form-group">
+                    <textarea class="form-control" id="reviews" name="reviews">Enter your reviews here</textarea>
+                </div>
+            <button class="btn btn-primary btn-block" type="submit">Post</button>
+            </div>
+        </form>
+    </div>
+
+    <br><br><br><br><br><br>
+{% endblock %}
+
+{% block footer_content %}
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).on('submit', '#post_review',function (e) {
+            e.preventDefault();
+            var reviews = $('#reviews').val();
+            var pk_user = $('#pk_user').val();
+            var pk_uni = $('#pk_uni').val();
+            $.ajax({
+                type: "POST",
+                url:"/uni_reviews_post_ajax/",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'pk_user': pk_user,
+                    'pk_uni': pk_uni,
+                    'reviews': reviews
+                },
+                dataType: 'json',
+                success: function () {
+                    $('#review_update').load(' #review_update')
+                    alert("Post posted");
+                },
+                error: function () {
+                    alert("User need to logged in for Posting reviews")
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).on('submit', '#rate_uni',function (e) {
+            e.preventDefault();
+            var ratings = $('#rate').val();
+            var pk_uni = $('#pk_uni').val();
+            $.ajax({
+                type: "POST",
+                url:"/post_ratings_on_uni_ajax/",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'pk_uni': pk_uni,
+                    'ratings': ratings
+                },
+                dataType: 'json',
+                success: function () {
+                    $('#ratings').load(' #ratings')
+                    alert("Rating posted");
+                },
+                error: function () {
+                    alert("User need to logged in for giving ratings")
+                }
+            });
+        });
+    </script>]
+{% endblock %}

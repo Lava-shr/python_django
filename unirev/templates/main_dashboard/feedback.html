@@ -1,0 +1,51 @@
+{% extends "main_dashboard/index.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Feedback</title>
+
+<style>
+
+</style>
+</head>
+
+<body>
+
+{% block content %}
+    <section class="bg">
+     <br><br><br><br><br><br><br><br><br><br><br>
+        <form method="POST" action="feedback_send/">
+            {% csrf_token %}
+                <div class="container">
+                    <div class="card-deck mb-3 text-center">
+                            <div class="card text-white bg-dark mb-3">
+                              <div class="card-header">
+                                <h4 class="my-0 font-weight-normal h4">Please provide us a feedback here.</h4>
+                              </div>
+                              <div class="card-body ">
+                                <ul class="list-unstyled mt-3 mb-2">
+                                    <input type="text" id="inputText" rows="4" class="form-control" placeholder="Full Name" required autofocus name="full_name"><br>
+                                    <input type="email" id="inputEmail" rows="4" class="form-control" placeholder="Email address" required autofocus name="email"><br>
+                                    <div class="form-group">
+                                      <textarea class="form-control" rows="4" id="comment" placeholder="Place your feedback here" name="feedback"></textarea>
+                                    </div>
+                                    <button class="btn btn-secondary" type="submit">Send</button>
+                                </ul>
+                              </div>
+                            </div>
+                    </div>
+                </div>
+        </form>
+
+    </section>
+{% endblock %}
+</body>
+
+{% block scripts %}
+
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}

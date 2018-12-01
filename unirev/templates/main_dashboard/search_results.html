@@ -1,0 +1,143 @@
+{% extends "main_dashboard/index.html" %}
+{% load staticfiles %}
+
+<head>
+    <title>Search Results</title>
+    {% block style_content %}
+    <style>
+
+        body {
+            padding-top: 10%;
+            background:  darkslategrey;
+        }
+
+        h1 {
+           font-size: 24px;
+           color: red;
+           text-transform: uppercase;
+           text-align: center;
+           margin: 0 0 35px 0;
+           text-shadow: 0px 1px 0px #f2f2f2;
+        }
+        h4 {
+            color: red;
+            font-size: 20px;
+        }
+        .table {
+            background: white;
+        }
+
+    </style>
+    {% endblock %}
+
+</head>
+
+
+{% block content %}
+    <a class="text-danger" >
+        {% if data %}
+            <div class ="container">
+                <div class="row my-3">
+                    <div class="col-md-12">
+                        <h1>Results for search request of "{{ data.query }}"</h1>
+                    </div>
+	            </div>
+
+            <table class="table text-center">
+                        <thead class="thead-light" class="table table-striped">
+                            <tr class="bg-warning">
+                                <th>#</th>
+                                <th>University Name</th>
+                                <th>Location</th>
+                                <th> Ratings out of 5</th>
+                                <th> Url for Review Page </th>
+                                <th> Url for UOS Page<span style="float:right"> </span></th>
+                            </tr>
+                        </thead>
+                {% for uni in data.uni %}
+                    <tbody>
+                        <tr class="success" class="bg-info">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ uni.uni_name }}</td>
+                            <td>{{ uni.location }}</td>
+                            <td>
+                                {% if uni.ratings == 1 %}
+                                <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                {% endif%}
+                                {% if uni.ratings == 2 %}
+                                    <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                {% endif%}
+                                {% if uni.ratings == 3 %}
+                                    <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                {% endif%}
+                                {% if uni.ratings == 4 %}
+                                    <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                {% endif%}
+                                {% if uni.ratings == 5 %}
+                                    <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i>
+                                {% endif%}
+                            </td>
+                            <td><a class="btn btn-dark btn-sm" href="{% url 'uni_homepage' uni.uni_id  %}" id="uni_data" >Reviews</a></td>
+                            <td><a class="btn btn-dark btn-sm" href="{% url 'uni_unit_of_study' uni.uni_id  %}" id="uni_data" >UOS</a></td>
+                        </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+            </div>
+        {% endif %}
+
+        {% if list_data %}
+            <div class ="container">
+                <div class="row my-3">
+                    <div class="col-md-12">
+                        <h1>We can't find your request of "{{ list_data.query }}" but hey why not check our list of uni </h1>
+                    </div>
+	            </div>
+                <table class="table text-center">
+                        <thead class="thead-light" class="table table-striped">
+                            <tr class="bg-warning">
+                                 <th>#</th>
+                                <th>University Name</th>
+                                <th>Location</th>
+                                <th> Ratings out of 5</th>
+                                <th> URL for Review Page </th>
+                                <th> URL for UOS Page<span style="float:right"> </span></th>
+                            </tr>
+                        </thead>
+                    {% for uni in list_data.uni_list %}
+                        <tbody>
+                            <tr class="success text-center" class="bg-info">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ uni.uni_name }}</td>
+                                <td>{{ uni.location }}</td>
+                                <td>
+                                    {% if uni.ratings == 1 %}
+                                    <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                    {% endif%}
+                                    {% if uni.ratings == 2 %}
+                                        <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                    {% endif%}
+                                    {% if uni.ratings == 3 %}
+                                        <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                    {% endif%}
+                                    {% if uni.ratings == 4 %}
+                                        <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star-o" style="font-size:24px"></i>
+                                    {% endif%}
+                                    {% if uni.ratings == 5 %}
+                                        <i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i><i class="fa fa-star" style="font-size:24px"></i>
+                                    {% endif%}
+                                </td>
+                                <td><a class="btn btn-dark btn-sm" href="{% url 'uni_homepage' uni.uni_id  %}" id="uni_data" >Reviews</a></td>
+                                <td><a class="btn btn-dark btn-sm" href="{% url 'uni_unit_of_study' uni.uni_id  %}" id="uni_data" >UOS</a></td>
+                            </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+
+        {% endif %}
+    </a>
+
+{% endblock %}
+{% block footer_content %}
+{% endblock %}
